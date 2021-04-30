@@ -1,5 +1,24 @@
+var userFormEl = document.querySelector("#user-form");
+var nameInputEl = document.querySelector("#username");
 var repoContainerEl = document.querySelector("#repos-container");
 var reposSearchTerm = document.querySelector("#repo-search-term");
+
+var formSubmitHandler = function(event) {
+    // prevent page from refreshing
+    event.preventDefault();
+    //console.log(event);
+    //get value from input element
+    var username = nameInputEl.value.trim();
+
+    if (username){
+        getUserRepos(username);
+        // clear old content
+        repoContainerEl.textContent = "";
+        nameInputEl.value = "";
+    } else {
+        alert("Please enter a GitHub username");
+    }
+};
 
 //a variable called getIserRepos that holds a function
 var getUserRepos = function(user) {
@@ -10,13 +29,15 @@ var getUserRepos = function(user) {
     fetch(apiUrl)
         .then(function(response) {
             //console.log(response);
+            //request was successful
             if (response.ok) {
+                console.log(response);
                 response.json().then(function(data) {
-                    //console.log(data);
+                    console.log(data);
                     displayRepos(data, user);
                 });
             } else {
-                alert("Error:" + response.statusText);
+                alert("Error: " + response.statusText);
             }
         })
 
@@ -35,31 +56,13 @@ var getUserRepos = function(user) {
 
 };
 
-var userFormEl = document.querySelector("#user-form");
-var nameInputEl = document.querySelector("#username");
-
-var formSubmitHandler = function(event) {
-    event.preventDefault();
-    //console.log(event);
-    //get value from input element
-    var username = nameInputEl.value.trim();
-
-    if (username){
-        getUserRepos(username);
-        nameInputEl.value = "";
-    } else {
-        alert("Please enter a GitHub username");
-    }
-};
-
 var displayRepos = function(repos, searchTerm) {
     //check if api returned any repos
     if (repos.length === 0) {
         repoContainerEl.textContent = "No repositories found.";
+        return;
     }
 
-    // clear old content
-    repoContainerEl.textContent = "";
     reposSearchTerm.textContent = searchTerm;
     
     // loop over repos
@@ -102,5 +105,6 @@ var displayRepos = function(repos, searchTerm) {
     // console.log(searchTerm);
 };
 
+//add event listners to forms
 userFormEl.addEventListener("submit", formSubmitHandler);
 //getUserRepos("lernantino");
