@@ -1,3 +1,4 @@
+var languageButtonsEl = document.querySelector("#language-buttons");
 var userFormEl = document.querySelector("#user-form");
 var nameInputEl = document.querySelector("#username");
 var repoContainerEl = document.querySelector("#repos-container");
@@ -122,6 +123,18 @@ var getFeaturedRepos = function(language) {
     });
 };
 
+var buttonClickHandler = function(event) {
+    var language = event.target.getAttribute("data-language");
+    //console.log(language);
+    if (language) {
+        getFeaturedRepos(language);
+
+        //clear old content
+        repoContainerEl.textContent = "";
+    }
+}
+
 //add event listners to forms
 userFormEl.addEventListener("submit", formSubmitHandler);
 //getUserRepos("lernantino");
+languageButtonsEl.addEventListener("click", buttonClickHandler);
