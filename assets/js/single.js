@@ -2,6 +2,14 @@ var repoNameEl = document.querySelector("#repo-name");
 var issueContainerEl = document.querySelector("#issues-container");
 var limitWarningEl = document.querySelector("#limit-warning");
 
+var getRepoName = function() {
+    var queryString = document.location.search;
+    var repoName = queryString.split("=")[1];
+    //console.log(repoName);
+    getRepoIssues(repName);
+    repoNameEl.textContent = repoName;
+}
+
 var getRepoIssues = function(repo) {
     //console.log(repo);
     //format the github api url
@@ -80,4 +88,4 @@ var displayWarning = function(repo) {
     limitWarningEl.appendChild(linkEl);
 };
 
-getRepoIssues("facebook/react");
+//getRepoIssues("facebook/react");
